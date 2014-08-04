@@ -93,7 +93,7 @@ inline bool operator!=(const Slice& x, const Slice& y) {
   return !(x == y);
 }
 
-inline int Slice::compare(const Slice& b) const {
+inline int Slice::compare(const Slice& b) const { // why inline ? 
   const int min_len = (size_ < b.size_) ? size_ : b.size_;
   int r = memcmp(data_, b.data_, min_len);
   if (r == 0) {
