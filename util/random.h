@@ -25,11 +25,11 @@ class Random {
     //
     // seed_ must not be zero or M, or else all subsequent computed values
     // will be zero or M respectively.  For all other values, seed_ will end
-    // up cycling through every number in [1,M-1]
+    // up cycling through every number in [1,M-1] ? 
     uint64_t product = seed_ * A;
 
     // Compute (product % M) using the fact that ((x << 31) % M) == x.
-    seed_ = static_cast<uint32_t>((product >> 31) + (product & M));
+    seed_ = static_cast<uint32_t>((product >> 31) + (product & M)); // ? 
     // The first reduction may overflow by 1 bit, so we may need to
     // repeat.  mod == M is not possible; using > allows the faster
     // sign-bit-based test.
