@@ -42,7 +42,7 @@ char* Arena::AllocateFallback(size_t bytes) {
 }
 
 char* Arena::AllocateAligned(size_t bytes) {
-    //没看懂
+    //妈蛋看懂了 就是内存大小都是2^x, 不让一个指针不对齐
   const int align = sizeof(void*);    // We'll align to pointer size
   assert((align & (align-1)) == 0);   // Pointer size should be a power of 2
   size_t current_mod = reinterpret_cast<uintptr_t>(alloc_ptr_) & (align-1);
