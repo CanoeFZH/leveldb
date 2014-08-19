@@ -85,7 +85,12 @@ namespace port {
 
 static const bool kLittleEndian = PLATFORM_IS_LITTLE_ENDIAN;
 #undef PLATFORM_IS_LITTLE_ENDIAN
-
+// Note:
+// 并发控制 具体实现在 db/port_posix.cc mu, sp, cv
+// Mutex和Spin将CondVar作为友类
+// Mutex vs Spinlock
+// if in doubt, use mutexes, they are usually the better choice and most modern systems will allow them to spinlock for a very short amount of time, if this seems beneficial. Using spinlocks can sometimes improve performance, but only under certain conditions and the fact that you are in doubt rather tells me, that you are not working on any project currently where a spinlock might be beneficial. You might consider using your own "lock object", that can either use a spinlock or a mutex internally (e.g. this behavior could be configurable when creating such an object), initially use mutexes everywhere and if you think that using a spinlock somewhere might really help, give it a try and compare the results (e.g. using a profiler), but be sure to test both cases, a single-core and a multi-core system before you jump to conclusions (and possibly different operating systems, if your code will be cross-platform). http://stackoverflow.com/questions/5869825/when-should-one-use-a-spinlock-instead-of-mutex 
+// 
 class CondVar;
 
 class Mutex {
@@ -166,6 +171,7 @@ class RWMutex {
 
 };
 
+// Snappy 压缩
 
 inline bool Snappy_Compress(const char* input, size_t length,
                             ::std::string* output) {
@@ -197,7 +203,7 @@ inline bool Snappy_Uncompress(const char* input, size_t length,
   return false;
 #endif
 }
-
+// ? 
 inline bool GetHeapProfile(void (*func)(void*, const char*, int), void* arg) {
   return false;
 }
